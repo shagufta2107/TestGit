@@ -1,1 +1,1 @@
-web: node testHeroku.js
+web: node index.js
