@@ -1,0 +1,30 @@
+{
+  "name": "read_data",
+  "version": "1.0.0",
+  "description": "Documentation for what packages this project depends on.",
+  "main": "readData.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shagufta2107/LearnNodeJS.git"
+  },
+  "keywords": [
+    "readfromDb"
+  ],
+  "author": "Shagufta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shagufta2107/LearnNodeJS/issues"
+  },
+  "homepage": "https://github.com/shagufta2107/LearnNodeJS#readme",
+  "scripts": {
+    "start": "node read_data.js",
+    
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongodb": "^2.2.33"
+  }
+}
