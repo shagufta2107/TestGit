@@ -1,1 +1,1 @@
-web: node readData.js
+web: node testHeroku.js
