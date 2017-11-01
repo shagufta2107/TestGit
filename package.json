@@ -2,13 +2,13 @@
   "name": "read_data",
   "version": "1.0.0",
   "description": "Documentation for what packages this project depends on.",
-  "main": "readData.js",
+  "main": "testHeroku.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shagufta2107/LearnNodeJS.git"
+    "url": "git+https://github.com/shagufta2107/TestGit.git"
   },
   "keywords": [
     "readfromDb"
@@ -16,9 +16,9 @@
   "author": "Shagufta",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/shagufta2107/LearnNodeJS/issues"
+    "url": "https://github.com/shagufta2107/TestGit/issues"
   },
-  "homepage": "https://github.com/shagufta2107/LearnNodeJS#readme",
+  "homepage": "https://github.com/shagufta2107/TestGit#readme",
   "scripts": {
     "start": "node testHeroku.js"
     
