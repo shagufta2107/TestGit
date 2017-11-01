@@ -13,7 +13,7 @@ app.get('/home', function (req,res){
 			});
 			//res.write("Welcome to Shagufta's page");
 			
-			response.send("fjgdfhd");
+			res.send("fjgdfhd");
 			//return res.send("Welcome to Shagufta's page");
 		});
 });
