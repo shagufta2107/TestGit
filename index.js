@@ -5,7 +5,7 @@ var fs = require("fs");
 
 app.set('port', (process.env.PORT || 5000));
 
-app.get('/home', function (req,res){
+app.get('', function (req,res){
 	fs.readFile('form.html', function (err, data) {
 			res.writeHead(200, {
 				'Content-Type': 'text/html',
