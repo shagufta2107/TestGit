@@ -12,6 +12,7 @@ app.get('/home', function (req,res){
 					'Content-Length': data.length
 			});
 			res.write("Welcome to Shagufta's page");
+			return;
 			//res.end();
 			//return res.send("Welcome to Shagufta's page");
 		});
