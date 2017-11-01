@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/shagufta2107/LearnNodeJS#readme",
   "scripts": {
-    "start": "node read_data.js",
+    "start": "node read_data.js"
     
   },
   "dependencies": {
