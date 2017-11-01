@@ -17,6 +17,17 @@ app.get('/home', function (req,res){
 		});
 });
 
+app.get('/', function (req,res){
+	fs.readFile('form.html', function (err, data) {
+			res.writeHead(200, {
+				'Content-Type': 'text/html',
+					'Content-Length': data.length
+			});
+			res.write("Welcome to Shagufta's page");
+			res.end();
+		});
+});
+
 app.post('/home', function (req,res){
 	MongoClient.connect(url, function(err, db) {
 	  if (err) throw err;
