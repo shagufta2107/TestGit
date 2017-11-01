@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/shagufta2107/TestGit#readme",
   "scripts": {
-    "postinstall": "node testHeroku.js"
+    "start": "node index.js"
     
   },
   "dependencies": {
