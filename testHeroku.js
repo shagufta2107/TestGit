@@ -5,14 +5,15 @@ var fs = require("fs");
 
 app.set('port', (process.env.PORT || 5000));
 
-app.get('/', function (req,res){
+app.post('/', function (req,res){
 	fs.readFile('form.html', function (err, data) {
 			res.writeHead(200, {
 				'Content-Type': 'text/html',
 					'Content-Length': data.length
 			});
-			res.write("Welcome to Shagufta's page");
-			res.end();
+			//res.write("Welcome to Shagufta's page");
+			//res.end();
+			res.send("Welcome to Shagufta's page");
 		});
 });
 
