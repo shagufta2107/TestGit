@@ -44,15 +44,20 @@ app.get('/sa', function(request, response) {
 	});
 
 
-app.get('/home', function (req,res){
+app.get('/products', function (req,res){
+	
+	console.log(req.query.prodId);
+	var prodId = req.query.prodId;
+	
+	//res.send(prodId)
 	MongoClient.connect(MONGO_URL, function(err, db) {
 	  if (err) throw err;
 		
-	  db.collection("ProductCollection").find({}).toArray(function(err, result) {
+	  db.collection("ProductCollection").find({ProductId: prodId}).toArray(function(err, result) {
 		if (err) throw err;
 		//console.log(result);
 		res.send(result)
-		db.close();
+		db.close(); 
 	  });	
 	});
 });
