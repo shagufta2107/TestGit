@@ -41,6 +41,17 @@ MongoClient.connect(MONGO_URL, (err, db) => {
 }); */
 
 app.set('port', (process.env.PORT || 5000));
+
+app.get('/test', function(request, response) {
+	fs.readFile('form.html', function (err, data) {
+				response.writeHead(200, {
+					'Content-Type': 'text/html',
+						
+				});
+				response.write("test");
+				response.end();
+			});
+	});
 app.get('/create', function(request, response) {
 	fs.readFile('form.html', function (err, data) {
 				response.writeHead(200, {
