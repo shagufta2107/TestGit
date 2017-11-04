@@ -2,9 +2,9 @@
   "name": "read_data",
   "version": "1.0.0",
   "description": "Documentation for what packages this project depends on.",
-  "main": "testHeroku.js",
+  "main": "index.js",
   "scripts": {
-    "postinstall": "node testHeroku.js"
+    "postinstall": "node index.js"
   },
   "repository": {
     "type": "git",
