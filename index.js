@@ -12,6 +12,25 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5000');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+
 MONGO_URL = 'mongodb://testUser1:tester123@ds245615.mlab.com:45615/shagufta_database';
 /*
 MongoClient.connect(MONGO_URL, (err, db) => {  
@@ -42,16 +61,21 @@ MongoClient.connect(MONGO_URL, (err, db) => {
 
 app.set('port', (process.env.PORT || 5000));
 
-app.get('/test', function(request, response) {
-	fs.readFile('form.html', function (err, data) {
+app.get('/home', function(request, response) {
+	fs.readFile('index.html', function (err, data) {
 				response.writeHead(200, {
 					'Content-Type': 'text/html',
 						
 				});
-				response.write("test");
+				response.write(data);
 				response.end();
 			});
 	});
+	
+app.get('/test', function(request, response) {
+	response.send("req received");
+
+});
 app.get('/create', function(request, response) {
 	fs.readFile('form.html', function (err, data) {
 				response.writeHead(200, {
@@ -75,7 +99,7 @@ app.post('/create',function(req,res)
 			
 		 db.collection('ProductCollection').insertOne(
 		{
-		    ProductId: (req.body.productId),
+		    _id: (req.body.productId),
 			Category: (req.body.category),
 			MainCategory:(req.body.mainCategory)
 		},
@@ -102,7 +126,7 @@ app.get('/products', function (req,res){
 		MongoClient.connect(MONGO_URL, function(err, db) {
 		  if (err) throw err;
 			
-		  db.collection("ProductCollection").find({}).toArray(function(err, result) {
+		  db.collection("ProductCollection").find({}).sort({price:1}).toArray(function(err, result) {
 			if (err) throw err;
 			//console.log(result);
 			res.send(result)
