@@ -6,6 +6,7 @@
 	  <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="custom.css">
    </head>
    
   
@@ -25,7 +26,7 @@ $(document).ready(function(){
                 if(len > 0){
                     for(var i=0;i<len;i++){
                         if(data[i]._id && data[i].Category && data[i].MainCategory && data[i].Price){
-                            txt += "<tr><td>"+data[i]._id+"</td><td>"+data[i].Category+"</td><td>"+data[i].MainCategory+"</td><td>"+data[i].Price+"</td ><td ><i class='w3-xlarge fa fa-edit updtbtn'></td><td><i class='w3-xlarge fa fa-trash' id='Delete'  onclick='deleteEntry()'></td></tr>";
+                            txt += "<tr><td class='prodId'><input type='text'  data-default="+data[i]._id+" value="+data[i]._id+" disabled=true>  </input></td><td ><input type='text' data-default="+data[i].Category+" value="+data[i].Category+" disabled=true>  </input></td><td ><input type='text' size='35' data-default="+data[i].MainCategory+" value="+data[i].MainCategory+" disabled=true>  </input></td><td ><input type='text' data-default="+data[i].Price+" value="+data[i].Price+" disabled=true>  </input></td><td ><span class='updtbtn'><i class='w3-xlarge fa fa-edit'></i></span><span class='saveBtn' style='display:none'><i class='w3-xlarge fa fa-save' ></i></span><span class='cancelBtn' style='display:none'><i class='w3-xlarge fa fa-close cancel'></i></span></td><td><span class='delBtn' ><i class='w3-xlarge fa fa-trash' ></span></td></tr>";
                         }
                     }
                     if(txt != ""){
@@ -43,19 +44,136 @@ $(document).ready(function(){
     
 });
 
-$(document).ready(function(){
-	$('.updtbtn').click(function () {
-		alert ("update pressed");
-	});
-});
+
 
 $(document).on('click', '.updtbtn', function(e) { 
     try{
-        alert ("update pressed");
-		 $('input[type="text"]',this)
-    }
+      
+			/*$(this).prevAll().each (function() {
+				this.setAttribute("contenteditable", true);
+				});*/
+				
+		/*	$(this).parent().prevAll().each (function() {
+				this.setAttribute("contenteditable", true);
+				});*/
+				
+				
+			$(this).parent().prevAll().each (function() {
+				$(this).find('input').each(function () {
+				 
+					this.disabled=false;
+					})
+				});
+				  
+			$(this).hide();
+			$(this).siblings('.saveBtn').show();
+			$(this).siblings('.cancelBtn').show();
+			
+			
+			
+		}
     catch(err){alert(err);}
 });
+
+$(document).on('click', '.cancelBtn', function(e) { 
+    try{
+      	
+			/*$(this).parent().prevAll().each (function() {
+				this.setAttribute("contenteditable", false);
+				this.innerHTML="asd";
+				});*/
+				
+				$(this).parent().prevAll().each (function() {
+				$(this).find('input').each(function () {
+				$(this).val($(this).attr("data-default"));
+					this.disabled=true;
+					})
+				});
+				
+			$(this).hide();
+			$(this).siblings('.saveBtn').hide();
+			$(this).siblings('.updtbtn').show();
+		
+		}
+    catch(err){alert(err);}
+});
+
+$(document).on('click', '.saveBtn', function(e) { 
+    try{
+      	
+			$(this).parent().prevAll().each (function() {
+				this.setAttribute("contenteditable", false);
+				});
+				
+			$(this).hide();
+			$(this).siblings('.cancelBtn').hide();
+			$(this).siblings('.updtbtn').show();
+		
+		}
+    catch(err){alert(err);}
+});
+
+
+$(document).on('click', '.delBtn', function(e) { 
+    try{
+		var prodId="";
+		$(this).parent().prevAll('.prodId').each(function() {
+			$(this).find('input').each(function () {
+			 prodId=this.value;	
+			
+				})
+			});
+			
+			//prodId=$(this).parent().prevAll('.prodId').find('input').value;
+			//alert(prodId);
+			
+		var userchoice =confirm("You are attempting to delete product: "+prodId+ "?\nClick 'Ok' to proceed.");
+		
+		if (userchoice == true)
+		{
+			
+			$.ajax({
+					type: "DELETE",
+					url:"http://localhost:5000/delete/?prodId="+prodId,
+					
+					success: function(data)
+					{  
+						if(data)
+						{
+							
+							alert(JSON.stringify(data));
+							window.location.reload();
+						}
+					
+					},
+					error: function() {
+						alert('Some problem occured during deletion.');
+					}
+		
+					});
+		}
+      	
+			
+		
+		}
+		catch(err)
+		{
+			alert(err);
+		}
+			
+		 
+});
+
+$(document).on('click', '.addBtn', function(e) { 
+    try{
+      	
+		window.location='\\create';
+		
+		}
+    catch(err){alert(err);}
+});
+
+
 
 
 </script>
@@ -69,14 +187,9 @@ $(document).on('click', '.updtbtn', function(e) {
             </td>
          </tr>
          <tr valign = "top">
-            <td bgcolor = "#aaa" width = "10">
-               <b>Main Menu</b><br/><br/><br/>
-               Add a Product<br /><br/>
-               Update a Product<br /><br/>
-               Delete a Product
-            </td>
+           
             
-            <td bgcolor = "#eee" width = "250" height = "500">
+            <td bgcolor = "#eee" width = "125" height = "500">
               
 			  
 			  <div class="result"></div>
@@ -86,14 +199,15 @@ $(document).on('click', '.updtbtn', function(e) {
 					<th width="20%">Category</th>
 					<th width="25%">Main Category</th>
 					<th width="15%">Price</th>
-					<th></th>
-					<th></th>
+					<th colspan=3></th>
+					
 				</tr>
 				
 				</tr>
 			</table>
-			<input type="button" value="test" class="updtbtn">
 			
+			<input type="submit" value="Add a product" class="addBtn">
+			<a href="www.google.com">edsfd</a>
 
 			  
             </td>
