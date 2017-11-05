@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser')
 var app = express();
 var fs = require("fs");
+var path=require("path");
 
 
 MongoClient = require('mongodb').MongoClient;
@@ -76,16 +77,25 @@ app.get('/test', function(request, response) {
 	response.send("req received");
 
 });
-app.get('/create', function(request, response) {
-	fs.readFile('form.html', function (err, data) {
+/*app.get('/create', function(request, response) {
+	fs.readFile(__dirname + 'form.html', function (err, data) {
 				response.writeHead(200, {
 					'Content-Type': 'text/html',
-					'Content-Length': data.length	
+					
 				});
-				response.write(data);
-				response.end();
+				response.render(data);
+				//response.end();
 			});
-	});
+	});*/
+
+app.get('/create', function(req, res) { 
+	console.log("request recievedfor create")
+    res.sendFile(path.join(__dirname, 'form.html'));
+});
+app.get('/form', function(req, res) { 
+console.log(path.join(__dirname,'form.html'))
+    res.sendFile(path.join(__dirname, 'form.html'));
+});
 
 app.post('/create',function(req,res)
 {
@@ -101,7 +111,8 @@ app.post('/create',function(req,res)
 		{
 		    _id: (req.body.productId),
 			Category: (req.body.category),
-			MainCategory:(req.body.mainCategory)
+			MainCategory:(req.body.mainCategory),
+			Price:req.body.price
 		},
 		function (err, res)
 		{
@@ -116,6 +127,51 @@ app.post('/create',function(req,res)
 	res.send(req.body);
 	
 });
+
+
+app.delete('/delete',function(req,res)
+{
+	console.log(req.body);
+	if (!req.query.prodId)
+	{
+		
+		console.log("No Product chosen to be deleted");
+	}
+	
+	else
+	{
+		console.log(req.query.prodId);
+		var prodId = req.query.prodId;
+		
+		//res.send(prodId)
+		MongoClient.connect(MONGO_URL, function(err, db) {
+		  if (err) throw err;
+			/*db.collection("ProductCollection").remove({_id: prodId},function (err, task) {  
+
+			var response = {
+				message: "task successfully deleted",
+				id: req.mongo_id
+				};
+				res.send(response);
+				);
+			 if (err) throw err;*/
+		  db.collection("ProductCollection").remove({_id: prodId},function(err, result) {
+			if (err) throw err;
+			var result1 = {
+				message: "Product successfully deleted",
+				id: prodId
+			};
+			console.log(result1);
+			console.log(result);
+			res.send(result1)
+			db.close(); 
+		  });
+		  
+		//  db.close();
+		});
+	}
+	
+});
 	
 app.get('/products', function (req,res){
 	
@@ -126,7 +182,7 @@ app.get('/products', function (req,res){
 		MongoClient.connect(MONGO_URL, function(err, db) {
 		  if (err) throw err;
 			
-		  db.collection("ProductCollection").find({}).sort({price:1}).toArray(function(err, result) {
+		  db.collection("ProductCollection").find().sort({"Price":1}).toArray(function(err, result) {
 			if (err) throw err;
 			//console.log(result);
 			res.send(result)
@@ -144,7 +200,7 @@ app.get('/products', function (req,res){
 		MongoClient.connect(MONGO_URL, function(err, db) {
 		  if (err) throw err;
 			
-		  db.collection("ProductCollection").find({ProductId: prodId}).toArray(function(err, result) {
+		  db.collection("ProductCollection").find({_id: prodId}).toArray(function(err, result) {
 			if (err) throw err;
 			//console.log(result);
 			res.send(result)
