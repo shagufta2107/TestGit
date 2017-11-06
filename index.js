@@ -3,6 +3,8 @@ var bodyParser = require('body-parser')
 var app = express();
 var fs = require("fs");
 var path=require("path");
+var async=require('async');
+var await = require('await');
 
 
 MongoClient = require('mongodb').MongoClient;
@@ -89,7 +91,7 @@ app.get('/test', function(request, response) {
 	});*/
 
 app.get('/create', function(req, res) { 
-	console.log("request recievedfor create")
+	console.log("request recievedfor create get")
     res.sendFile(path.join(__dirname, 'form.html'));
 });
 app.get('/form', function(req, res) { 
@@ -97,34 +99,60 @@ console.log(path.join(__dirname,'form.html'))
     res.sendFile(path.join(__dirname, 'form.html'));
 });
 
+
+function callback(prodCount)
+{
+	console.log("callback--->"+prodCount);
+ /*	if (prodCount)
+	{
+		
+		insResponse = { error: false, message: "Product already exists" };
+		res.send(insResponse);
+	}
+	else
+	{
+		MongoClient.connect(MONGO_URL, function(err, db)
+		{
+				
+			db.collection('ProductCollection').insertOne(
+			{
+				_id: (req.body.productId),
+				Category: (req.body.category),
+				MainCategory:(req.body.mainCategory),
+				Price:req.body.price
+			},function (err, result)
+				{
+					if (err) 
+					{
+						
+						insResponse = { error: true, message: "Error adding the product." };
+						
+					}	
+				
+				console.log(result);
+				insResponse = { error: false, message: "successfully added.",id: result.insertedId  };
+				res.send(insResponse);
+				db.close();
+				});
+						
+				
+		});
+	}
+	*/
+}
+
 app.post('/create',function(req,res)
 {
+	console.log("request recieved for create post");
 	console.log(req.body);
-	//console.log(req.body.category);
-	//console.log(req.body.mainCategory);
-	
+	prodId=req.body.productId;
+
 	MongoClient.connect(MONGO_URL, function(err, db)
 	{
-		if (err) throw err;
-			
-		 db.collection('ProductCollection').insertOne(
-		{
-		    _id: (req.body.productId),
-			Category: (req.body.category),
-			MainCategory:(req.body.mainCategory),
-			Price:req.body.price
-		},
-		function (err, res)
-		{
-			if (err)
-			{
-				db.close();
-				return console.log(err);
-			}
-		});
-	  
-	});
-	res.send(req.body);
+		prodCount = (db.collection("ProductCollection").findOne({_id: prodId}));
+			db.close();
+		callback(prodCount);
+	}); 
 	
 });
 
