@@ -1,0 +1,76 @@
+<html>
+
+<head>
+      <title>Products</title>
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="custom.css">
+ </head>
+   
+  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+
+
+$(document).ready(function(){
+
+	
+	$("#updateProdForm").submit(function(event)	{
+	    event.preventDefault();
+		//alert("create");
+		var postData = $(this).serializeArray();
+		
+		$.ajax(
+		{
+			url : "http://localhost:5000/update",
+			type: "POST",
+			data : postData,
+			success:function(data) 
+			{
+				//alert(JSON.stringify(data.message));
+				alert("done");
+				window.location="http://localhost:5000/home";
+				
+				// $("#result").html(JSON.stringify(data.message));
+			},
+			error: function(jqXHR, textStatus, errorThrown) 
+			{
+			alert(textStatus);
+			}
+		});
+		
+	});
+	
+
+
+
+});
+
+</script>
+
+   <body>
+   <h1>Update Product Details</h1>
+    <!--  <form acion="/create" method='POST' id='createProdForm'> -->
+        <form   id='updateProdForm'> 
+          ProductId:<br>
+		  <input type="text" name="productId" value="HT-1003">
+		  <br><br>
+		  Category:<br>
+		  <input type="text" name="category" value="Laptop" >
+		  <br><br>
+		  Main Category:<br>
+		  <input type="text" name="mainCategory" value="Computer Systems" >
+		  <br><br>
+		  Price:<br>
+		  <input type="number" name="price" value="10000" >
+		  <br><br><br>
+		  <input type="submit" value="Update" >
+        
+      </form>
+	  
+	  <div id="result"></div>
+	  
+	  
+   </body>
+</html>
