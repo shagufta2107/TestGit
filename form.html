@@ -1,7 +1,55 @@
 <html>
+
+<head>
+      <title>Products</title>
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="custom.css">
+ </head>
+   
+  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+
+
+$(document).ready(function(){
+
+	
+	$("#createProdForm").submit(function(event)	{
+	    event.preventDefault();
+		//alert("create");
+		var postData = $(this).serializeArray();
+		//alert(postData);
+		
+		$.ajax(
+		{
+			url : "http://localhost:5000/create",
+			type: "POST",
+			data : postData,
+			success:function(data) 
+			{
+				//alert(JSON.stringify(data));
+				 $("#result").html(JSON.stringify(data.message));
+			},
+			error: function(jqXHR, textStatus, errorThrown) 
+			{
+			alert(textStatus);
+			}
+		});
+		
+	});
+	
+
+
+
+});
+
+</script>
+
    <body>
-      <form action="/create" method="POST">
-        
+    <!--  <form acion="/create" method='POST' id='createProdForm'> -->
+        <form   id='createProdForm'> 
           ProductId:<br>
 		  <input type="text" name="productId" value="HT-1003">
 		  <br><br>
@@ -14,9 +62,11 @@
 		  Price:<br>
 		  <input type="number" name="price" value="10000" >
 		  <br><br><br>
-		  <input type="submit" value="Create">
+		  <input type="submit" value="Create" class="createProdBtn" >
         
       </form>
+	  
+	  <div id="result"></div>
 	  
 	  
    </body>
