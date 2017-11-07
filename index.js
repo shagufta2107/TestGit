@@ -5,7 +5,9 @@ var fs = require("fs");
 var path=require("path");
 var async=require('async');
 var await = require('await');
+var callback= require('callback');
 
+app.use(express.static('public'))
 
 MongoClient = require('mongodb').MongoClient;
 
@@ -100,19 +102,56 @@ console.log(path.join(__dirname,'form.html'))
 });
 
 
-function callback(prodCount)
+
+var checkIfExists = function(db,prodId,callback)
 {
-	console.log("callback--->"+prodCount);
- /*	if (prodCount)
-	{
-		
-		insResponse = { error: false, message: "Product already exists" };
-		res.send(insResponse);
-	}
-	else
-	{
-		MongoClient.connect(MONGO_URL, function(err, db)
+	
+			db.collection("ProductCollection").find({_id: prodId}).toArray(function(err, result) {
+				
+			db.close;
+			if(err) 
+			{
+				console.log(err);
+			}
+			else{	
+			
+			callback(null,result);// on commenting this, no error
+			}
+			
+			
+			
+		});
+	
+}
+
+app.post('/create',function(req,res)
+{
+	console.log("request recieved for create post");
+	//console.log(req.body);
+	prodId=req.body.productId;
+
+	
+	
+	MongoClient.connect(MONGO_URL, function(err, db)
+	{ if (err) throw err;
+		checkIfExists(db,prodId,function (err, doc) {
+        if(err)
+			{
+            // error here
+			 console.log("Error1");
+            console.log(err);
+            return;
+        }
+
+        if(doc.length) {
+            insResponse = { error: true, message: "Product already exists." };
+			res.send(insResponse);
+            //console.dir(doc);
+        } 
+		else 
 		{
+            console.log('insert');
+						
 				
 			db.collection('ProductCollection').insertOne(
 			{
@@ -126,34 +165,23 @@ function callback(prodCount)
 					{
 						
 						insResponse = { error: true, message: "Error adding the product." };
+						res.send(insResponse);
 						
 					}	
 				
-				console.log(result);
+				//console.log(result);
 				insResponse = { error: false, message: "successfully added.",id: result.insertedId  };
 				res.send(insResponse);
 				db.close();
 				});
 						
 				
-		});
-	}
-	*/
-}
+		
+        }
 
-app.post('/create',function(req,res)
-{
-	console.log("request recieved for create post");
-	console.log(req.body);
-	prodId=req.body.productId;
+    });
 
-	MongoClient.connect(MONGO_URL, function(err, db)
-	{
-		prodCount = (db.collection("ProductCollection").findOne({_id: prodId}));
-			db.close();
-		callback(prodCount);
-	}); 
-	
+});
 });
 
 
@@ -237,6 +265,67 @@ app.get('/products', function (req,res){
 		});
 	}
 });
+
+
+// ------ Update function ------------
+app.get('/update', function(req, res) { 
+	console.log("request recievedfor update get")
+    res.sendFile(path.join(__dirname, 'updateProduct.html'));
+});
+
+app.post('/update',function(req,res)
+{
+	console.log("request recieved for update post");
+	console.log(req.body);
+	prodId=req.body.prodId;
+	console.log(prodId);
+	
+
+	MongoClient.connect(MONGO_URL, function(err, db)
+	{ 		
+				
+			/*db.collection('ProductCollection').update( {_id: req.body.productId},
+			{	$set:
+				{
+				
+					Category: (req.body.category),
+					MainCategory:(req.body.mainCategory),
+					Price:req.body.price
+				}*/
+			db.collection('ProductCollection').update( {_id: prodId},
+			{	$set:
+				{
+				
+					Category: (req.body.category),
+					MainCategory:(req.body.mainCategory),
+					Price:req.body.price
+				}
+			},function (err, result)
+				{
+					if (err) 
+					{
+						
+						insResponse = { error: true, message: "Error updating the product." };
+						res.send(insResponse);
+						
+					}	
+				console.log("success");
+				//console.log(result);
+				insResponse = { error: false, message: "Successfully updated product."+req.body.prodId  };
+				res.send(insResponse);
+				db.close();
+				});
+						
+				
+		
+        
+
+    }); 
+
+});
+
+
+
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
