@@ -81,8 +81,10 @@ MongoClient.connect(MONGO_URL, (err, db) => {
 
 app.set('port', (process.env.PORT || 5000));
 
-app.get('/home', function(request, response) {	
-	
+app.get('/home', function(request, response) {
+	if(request.session.user)
+	{	
+			console.log(" session");
 				fs.readFile('index.html', function (err, data) {
 					response.writeHead(200, {
 						'Content-Type': 'text/html',
@@ -91,14 +93,26 @@ app.get('/home', function(request, response) {
 					response.write(data);
 					response.end();
 				});
+
+
+			}
+			else{
+				console.log("no session");
+				fs.readFile('index.html', function (err, data) {
+					response.writeHead(200, {
+						'Content-Type': 'text/html',
+
+					});
+					response.write(data);
+					response.end();
+				});
+
+			}
 			});
 		
 	
 
-app.get('/test', function(request, response) {
-	response.send("req received");
 
-});
 /*app.get('/create', function(request, response) {
 	fs.readFile(__dirname + 'form.html', function (err, data) {
 				response.writeHead(200, {
@@ -417,18 +431,7 @@ app.post('/register', function(req, res) {
 // ----------------- Finish: Register new user-------------------------------------
 
 //------------Start: User session ------------------
-app.get('/', function(request, response) {
-	console.log("i was here");
-	fs.readFile('test1.html', function (err, data) {
-		response.writeHead(200, {
-			'Content-Type': 'text/html',
-
-		});
-		response.write(data);
-		response.end();
-	});
-
-});
+;
 	
 //------------End: User session -------------------
 
@@ -449,23 +452,17 @@ app.post('/login', function(req, res) {
 			if(bcrypt.compareSync(req.body.loginPassword, authenticatedUser.password)) {
 				console.log("Authentication successful");
 				// sets a cookie with the user's info
-				req.session.user = authenticatedUser.username;
+				req.session.user = authenticatedUser;
 				insResponse = { error: false, message: "Authentication successful. Welcome "  };
-				fs.readFile('index.html', function (err, data) {
-					res.writeHead(200, {
-						'Content-Type': 'text/html',
-
-					});
-					//res.write(data);
-				 //res.end();
-				});
+				
 				res.send(insResponse);
-			//	return;
+				return;
 			   } 
 			   else {
 				console.log("Authentication failed");
 				insResponse = { error: true, message: "Incorrect login credentials, authentication failed."  };
 				res.send(insResponse);
+				return;
 			   }
 		}
 
@@ -473,6 +470,7 @@ app.post('/login', function(req, res) {
 			console.log("User Does not exist. Both Username and Email are required. ");
 			insResponse = { error: true, message: "User Does not exist. Both Username and Email are required."  };
 			res.send(insResponse);;
+			return;
 		}
 
 	  	});
