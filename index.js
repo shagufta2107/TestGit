@@ -98,7 +98,7 @@ app.get('/home', function(request, response) {
 			}
 			else{
 				console.log("no session");
-				fs.readFile('index.html', function (err, data) {
+				fs.readFile('unloggedin.html', function (err, data) {
 					response.writeHead(200, {
 						'Content-Type': 'text/html',
 

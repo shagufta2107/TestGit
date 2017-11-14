@@ -52,7 +52,7 @@ $(document).ready(function(){
                         {
                             for(var i=0;i<len;i++){
                             if(data[i]._id && data[i].Category && data[i].MainCategory && data[i].Price){
-                                txt += "<tr><td class='prodId'><input type='text'  data-default="+data[i]._id+" value="+data[i]._id+" disabled=true>  </input></td><td class='category' ><input  type='text' data-default="+data[i].Category+" value="+data[i].Category+" disabled=true>  </input></td><td class='mainCategory' ><input  type='text'  data-default="+data[i].MainCategory+" value="+data[i].MainCategory+" disabled=true>  </input></td><td class='price'><input   type='number' data-default="+data[i].Price+" value="+data[i].Price+" disabled=true>  </input></td><td  ><span class='updtbtn' style='display:None;'><i class='w3-xlarge fa fa-edit'></i></span><span class='saveBtn' style='display:none'><i class='w3-xlarge fa fa-save' ></i></span><span class='cancelBtn' style='display:none'><i class='w3-xlarge fa fa-close cancel'></i></span></td><td><span class='delBtn' style='display:none' ><i class='w3-xlarge fa fa-trash' ></span></td><td><input type=button value='Update' class='simpleupdate'</td></tr>";
+                                txt += "<tr><td class='prodId'><input type='text'  data-default="+data[i]._id+" value="+data[i]._id+" disabled=true>  </input></td><td class='category' ><input  type='text' data-default="+data[i].Category+" value="+data[i].Category+" disabled=true>  </input></td><td class='mainCategory' ><input  type='text'  data-default="+data[i].MainCategory+" value="+data[i].MainCategory+" disabled=true>  </input></td><td class='price'><input   type='number' data-default="+data[i].Price+" value="+data[i].Price+" disabled=true>  </input></td><td  ><span class='updtbtn' ><i class='w3-xlarge fa fa-edit'></i></span><span class='saveBtn' style='display:none'><i class='w3-xlarge fa fa-save' ></i></span><span class='cancelBtn' style='display:none'><i class='w3-xlarge fa fa-close cancel'></i></span></td><td><span class='delBtn'  ><i class='w3-xlarge fa fa-trash' ></span></td><td><input type=button value='Update' class='simpleupdate'</td></tr>";
                                 }
                             }
                             if(txt != ""){
@@ -516,13 +516,7 @@ catch(err){alert(err);}
 							<td>
 								<h1>Sample Products Page</h1>
 							</td>
-							<td align="right">
-									<button id="login-user">Login</button>
-								<br>
-										
-								<button id="create-user">Register</button>
-										
-									</td>
+							
 								</td>
 								<tr>
 								</table>
