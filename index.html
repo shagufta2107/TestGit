@@ -1,306 +1,589 @@
 
 <html>
+	<head>
+		<title>Products</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="custom.css">
+	</head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="/resources/demos/style.css">
+	<style>
+	  label, input { display:block; }
+	  input.text { margin-bottom:12px; width:95%; padding: .4em; }
+	  fieldset { padding:0; border:0; margin-top:25px; }
+	  h1 { font-size: 1.2em; margin: .6em 0; }
+	  div#users-contain { width: 350px; margin: 20px 0; }
+	  div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+	  div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+	  .ui-dialog .ui-state-error { padding: .3em; }
+	  .validateTips { border: 1px solid transparent; padding: 0.3em; }
+	</style>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-   <head>
+   
       
 
-<title>Products</title>
-	  <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="custom.css">
-   </head>
    
   
    
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
+	
 $(document).ready(function(){
-$('#ajax-loader').hide();
+    $('#ajax-loader').hide();
     $.ajax({
-		type: "GET",
-		url:"http://localhost:5000/products",
-		beforeSend: function(){
-								$('#ajax-loader').show();
-								
-							},
-		complete: function(){
-							$('#ajax-loader').hide();
-							
-						},
-		
-		success: function(data){ 
-            if(data){
-			
-                var len = data.length;
-                var txt = "";
-                if(len > 0){
-                    for(var i=0;i<len;i++){
-                        if(data[i]._id && data[i].Category && data[i].MainCategory && data[i].Price){
-                            txt += "<tr><td class='prodId'><input type='text'  data-default="+data[i]._id+" value="+data[i]._id+" disabled=true>  </input></td><td class='category' ><input  type='text' data-default="+data[i].Category+" value="+data[i].Category+" disabled=true>  </input></td><td class='mainCategory' ><input  type='text'  data-default="+data[i].MainCategory+" value="+data[i].MainCategory+" disabled=true>  </input></td><td class='price'><input   type='number' data-default="+data[i].Price+" value="+data[i].Price+" disabled=true>  </input></td><td ><span class='updtbtn'><i class='w3-xlarge fa fa-edit'></i></span><span class='saveBtn' style='display:none'><i class='w3-xlarge fa fa-save' ></i></span><span class='cancelBtn' style='display:none'><i class='w3-xlarge fa fa-close cancel'></i></span></td><td><span class='delBtn' ><i class='w3-xlarge fa fa-trash' ></span></td><td><input type=button value='Update' class='simpleupdate'</td></tr>";
+                type: "GET",
+                url:"http://localhost:5000/products",
+                beforeSend: function(){
+                        $('#ajax-loader').show();
+                },
+                complete: function(){
+                    $('#ajax-loader').hide();
+                },
+
+                success: function(data){ 
+                    if(data){
+                        var len = data.length;
+                        var txt = "";
+                        if(len > 0)
+                        {
+                            for(var i=0;i<len;i++){
+                            if(data[i]._id && data[i].Category && data[i].MainCategory && data[i].Price){
+                                txt += "<tr><td class='prodId'><input type='text'  data-default="+data[i]._id+" value="+data[i]._id+" disabled=true>  </input></td><td class='category' ><input  type='text' data-default="+data[i].Category+" value="+data[i].Category+" disabled=true>  </input></td><td class='mainCategory' ><input  type='text'  data-default="+data[i].MainCategory+" value="+data[i].MainCategory+" disabled=true>  </input></td><td class='price'><input   type='number' data-default="+data[i].Price+" value="+data[i].Price+" disabled=true>  </input></td><td  ><span class='updtbtn' style='display:None;'><i class='w3-xlarge fa fa-edit'></i></span><span class='saveBtn' style='display:none'><i class='w3-xlarge fa fa-save' ></i></span><span class='cancelBtn' style='display:none'><i class='w3-xlarge fa fa-close cancel'></i></span></td><td><span class='delBtn' style='display:none' ><i class='w3-xlarge fa fa-trash' ></span></td><td><input type=button value='Update' class='simpleupdate'</td></tr>";
+                                }
+                            }
+                            if(txt != ""){
+                                $("#table").append(txt);
+                            }	
                         }
                     }
-                    if(txt != ""){
-                        $("#table").append(txt);
-                    }
+                },
+                error: function() {
+                    alert('Not OKay');
                 }
-            }
-        },
-		error: function() {
-			alert('Not OKay');
-		}
+            });
 	});
-	
-	 
-    
-});
 
 
 $(document).on('click', '.simpleupdate', function(e) { 
     try{
-     var prodId="";
-		$(this).parent().prevAll('.prodId').each(function() {
-			$(this).find('input').each(function () {
-			 prodId=this.value;	
-			
-				})
-			});
-		window.location='\\update?'+prodId;
-			
-		}
-    catch(err){alert(err);}
+            var prodId="";
+            $(this).parent().prevAll('.prodId').each(function() {
+                $(this).find('input').each(function () {
+                    prodId=this.value;	
+                
+                })
+            });
+            window.location='\\update?'+prodId;
+        }
+        catch(err){
+            alert(err);
+        }
 });
 
 
 $(document).on('click', '.updtbtn', function(e) { 
-    try{
-      
-			/*$(this).prevAll().each (function() {
-				this.setAttribute("contenteditable", true);
-				});*/
-				
-		/*	$(this).parent().prevAll().each (function() {
-				this.setAttribute("contenteditable", true);
-				});*/
-				
-				
-			$(this).parent().prevAll().each (function() {
-				field=this.className;
-				$(this).find('input').each(function () {
-				if (field !='prodId')
-				 {
-					this.disabled=false;
-					}
-					})
-				});
-				  
-			$(this).hide();
-			$(this).siblings('.saveBtn').show();
-			$(this).siblings('.cancelBtn').show();
-			
-			
-			
-		}
-    catch(err){alert(err);}
+try{
+
+    /*$(this).prevAll().each (function() {
+        this.setAttribute("contenteditable", true);
+        });*/
+        
+/*	$(this).parent().prevAll().each (function() {
+        this.setAttribute("contenteditable", true);
+        });*/
+        
+        
+    $(this).parent().prevAll().each (function() {
+        field=this.className;
+        $(this).find('input').each(function () {
+        if (field !='prodId')
+         {
+            this.disabled=false;
+            }
+            })
+        });
+          
+    $(this).hide();
+    $(this).siblings('.saveBtn').show();
+    $(this).siblings('.cancelBtn').show();
+    
+    
+    
+}
+catch(err){alert(err);}
 });
 
 $(document).on('click', '.cancelBtn', function(e) { 
-    try{
-      	
-			/*$(this).parent().prevAll().each (function() {
-				this.setAttribute("contenteditable", false);
-				this.innerHTML="asd";
-				});*/
-				
-				$(this).parent().prevAll().each (function() {
-				$(this).find('input').each(function () {
-				$(this).val($(this).attr("data-default"));
-					this.disabled=true;
-					})
-				});
-				
-			$(this).hide();
-			$(this).siblings('.saveBtn').hide();
-			$(this).siblings('.updtbtn').show();
-		
-		}
-    catch(err){alert(err);}
+try{
+  
+    /*$(this).parent().prevAll().each (function() {
+        this.setAttribute("contenteditable", false);
+        this.innerHTML="asd";
+        });*/
+        
+        $(this).parent().prevAll().each (function() {
+        $(this).find('input').each(function () {
+        $(this).val($(this).attr("data-default"));
+            this.disabled=true;
+            })
+        });
+        
+    $(this).hide();
+    $(this).siblings('.saveBtn').hide();
+    $(this).siblings('.updtbtn').show();
+
+}
+catch(err){alert(err);}
 });
 
 $(document).on('click', '.saveBtn', function(e) { 
-    try{
-      	
-			$(this).parent().prevAll().each (function() {
-				this.setAttribute("contenteditable", false);
-				});
-				
-			$(this).hide();
-			$(this).siblings('.cancelBtn').hide();
-			$(this).siblings('.updtbtn').show();
-			
-			var data={};
-			
-			
-			$(this).parent().prevAll().each(function() {
-			var field = this.className;
-			//alert(field);
-			$(this).find('input').each(function () {
-			 data[field]=this.value;	
-			
-				})
-			});
-			
-			//alert(JSON.stringify(data));
-			
-			$.ajax(
-			{
-				url : "http://localhost:5000/update",
-				type: "POST",
-				data : data,
-				beforeSend: function(){
-								$('#ajax-loader').show();
-								
-							},
-				complete: function(){
-							$('#ajax-loader').hide();
-							
-						},
-				success:function(result) 
-				{
-					alert(JSON.stringify(result.message));
-					window.location="http://localhost:5000/home";
-					 //$("#result").html(JSON.stringify(data.message));
-				},
-				error: function(jqXHR, textStatus, errorThrown) 
-				{
-				alert(textStatus);
-				}
-			});
-		
-	//});
-			
-			
-			
-		
-		}
-    catch(err){alert(err);}
+try{
+  
+    $(this).parent().prevAll().each (function() {
+        this.setAttribute("contenteditable", false);
+        });
+        
+    $(this).hide();
+    $(this).siblings('.cancelBtn').hide();
+    $(this).siblings('.updtbtn').show();
+    
+    var data={};
+    
+    
+    $(this).parent().prevAll().each(function() {
+    var field = this.className;
+    //alert(field);
+    $(this).find('input').each(function () {
+     data[field]=this.value;	
+    
+        })
+    });
+    
+    //alert(JSON.stringify(data));
+    
+    $.ajax(
+    {
+        url : "http://localhost:5000/update",
+        type: "POST",
+        data : data,
+        beforeSend: function(){
+                        $('#ajax-loader').show();
+                        
+                    },
+        complete: function(){
+                    $('#ajax-loader').hide();
+                    
+                },
+        success:function(result) 
+        {
+            alert(JSON.stringify(result.message));
+            window.location="http://localhost:5000/home";
+             //$("#result").html(JSON.stringify(data.message));
+        },
+        error: function(jqXHR, textStatus, errorThrown) 
+        {
+        alert(textStatus);
+        }
+    });
+
+//});
+    
+    
+    
+
+}
+catch(err){alert(err);}
 });
 
 
-$(document).on('click', '.delBtn', function(e) { 
-    try{
-		var prodId="";
-		$(this).parent().prevAll('.prodId').each(function() {
+	$(document).on('click', '.delBtn', function(e) { 
+	try{
+	var prodId="";
+	$(this).parent().prevAll('.prodId').each(function() {
 			$(this).find('input').each(function () {
-			 prodId=this.value;	
+			prodId=this.value;	
 			
-				})
+					})
 			});
 			
 			//prodId=$(this).parent().prevAll('.prodId').find('input').value;
 			//alert(prodId);
 			
-		var userchoice =confirm("You are attempting to delete product: "+prodId+ "?\nClick 'Ok' to proceed.");
-		
-		if (userchoice == true)
-		{
+	var userchoice =confirm("You are attempting to delete product: "+prodId+ "?\nClick 'Ok' to proceed.");
+
+	if (userchoice == true)
+	{
 			
 			$.ajax({
-					type: "DELETE",
-					url:"http://localhost:5000/delete/?prodId="+prodId,
-					
-					success: function(data)
-					{  
-						if(data)
-						{
+							type: "DELETE",
+							url:"http://localhost:5000/delete/?prodId="+prodId,
 							
-							alert(JSON.stringify(data));
-							window.location.reload();
-						}
-					
-					},
-					error: function() {
-						alert('Some problem occured during deletion.');
-					}
+							success: function(data)
+							{  
+									if(data)
+									{
+											
+											alert(JSON.stringify(data));
+											window.location.reload();
+									}
+							
+							},
+							error: function() {
+									alert('Some problem occured during deletion.');
+							}
+
+							});
+	}
 		
-					});
-		}
-      	
 			
-		
-		}
-		catch(err)
-		{
+
+	}
+	catch(err)
+	{
 			alert(err);
-		}
+	}
 			
-		 
-});
+	
+	});
 
-$(document).on('click', '.addBtn', function(e) { 
-    try{
-      	
-		window.location='\\create';
+	$(document).on('click', '.addBtn', function(e) { 
+	try{
 		
-		}
-    catch(err){alert(err);}
-});
+	window.location='\\create';
 
+	}
+	catch(err){alert(err);}
+	});
+
+	//------------------- Start: Register user popup JS ----
+
+	$( function() {
+	var dialog, form,
+
+	// From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
+	emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+	name = $( "#name" ),
+	email = $( "#email" ),
+	password = $( "#password" ),
+	confPassword=$('#confPassword')
+	allFields = $( [] ).add( name ).add( email ).add( password ),
+	tips = $( ".validateTips" );
+	
+
+	function updateTips( t ) {
+	tips
+		.text( t )
+		.addClass( "ui-state-highlight" );
+	setTimeout(function() {
+		tips.removeClass( "ui-state-highlight", 1500 );
+	}, 500 );
+	}
+
+	function checkLength( o, n, min, max ) {
+		
+	if ( o.val().length > max || o.val().length < min ) {
+		o.addClass( "ui-state-error" );
+		updateTips( "Length of " + n + " must be between " +
+			min + " and " + max + "." );
+		return false;
+	} else {
+		return true;		
+	}
+	}
+
+	function checkRegexp( o, regexp, n ) {
+	if ( !( regexp.test( o.val() ) ) ) {
+		o.addClass( "ui-state-error" );
+		updateTips( n );
+		return false;
+	} else {
+		return true;
+	}
+	}
+
+	function checkPassword(password,confPassword,n)
+	{
+			if(password.val == confPassword.val) {
+					return true;
+			}
+			else {
+					password.addClass("ui-state-error");
+					confPassword.addClass("ui-state-error");
+					updateTips( n );
+					return false;
+			}
+	}
+
+	function addUser() {
+		alert(name.val());
+		//var userData={'name':name.val(),'email':email.val(),'password':password.val(),'confPassword':confPassword.val()}
+		var userData=$('#user-form').serializeArray();
+	var valid = true;
+	allFields.removeClass( "ui-state-error" );
+
+	valid = valid && checkLength( name, "username", 3, 16 );
+	valid = valid && checkLength( email, "email", 6, 80 );
+	valid = valid && checkLength( password, "password", 5, 16 );
+	valid = valid && checkLength( confPassword, "confPassword", 5, 16 );
+
+	valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
+	valid = valid && checkRegexp( email, emailRegex, "eg. ui@jquery.com" );
+	valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
+	valid=  valid && checkPassword(password,confPassword, "Passwork and Confirm password do not match.");
+	if ( valid ) {
+			$.ajax(
+			{
+					url : "http://localhost:5000/register",
+					type: "POST",
+					data : userData,
+					
+					beforeSend: function(){
+													$('#ajax-loader').show();
+											},
+					complete: function(){
+											$('#ajax-loader').hide();
+									},
+					success:function(result) {
+							alert(JSON.stringify(result.message));
+							
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+					alert(textStatus);
+					}
+			});
+		dialog.dialog( "close" );
+		}
+		return valid;
+		}
+
+		dialog = $( "#dialog-form" ).dialog({
+		autoOpen: false,
+		height: 500,
+		width: 450,
+		modal: true,
+		buttons: {
+			"Create an account": addUser,
+			Cancel: function() {
+				dialog.dialog( "close" );
+			}
+		},
+		close: function() {
+			form[ 0 ].reset();
+			allFields.removeClass( "ui-state-error" );
+		}
+		});
+
+		form = dialog.find( "form" ).on( "submit", function( event ) {
+		event.preventDefault();
+		addUser();
+		});
+
+		$( "#create-user" ).button().on( "click", function() {
+		dialog.dialog( "open" );
+		});
+
+	} );
+
+
+	//------ End: Register user popup JS ----------------------------
+
+	//--------Start: User login Pop up --------------------
+
+	$( function() {
+	var dialog, form,
+
+	// From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
+	emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+	username = $( "#loginUsername" ),
+	email = $( "#loginEmail" ),
+	password = $( "#loginPassword" ),
+	
+	allFields = $( [] ).add( name ).add( email ).add( password ),
+	tips = $( ".validateTips" );
+	//userData={'username':name.val(),'email':email.val()}
+	loginData=$('#login-form').serializeArray();
+
+	function updateTips( t ) {
+	tips
+		.text( t )
+		.addClass( "ui-state-highlight" );
+		setTimeout(function() {
+			tips.removeClass( "ui-state-highlight", 1500 );
+			}, 500 );
+	}	
+	function checkRegexp( o, regexp, n ) {
+	//	alert(o.val());
+	if ( !( regexp.test( o.val() ) ) ) {
+		o.addClass( "ui-state-error" );
+		updateTips( n );
+		return false;
+	} else {
+		return true;
+	}
+	}
+
+	function loginUser() {
+		var valid = true;
+		allFields.removeClass( "ui-state-error" );
+
+		
+
+		//valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
+		valid = valid && checkRegexp( email, emailRegex, "eg. ui@jquery.com" );
+		loginData=$('#login-form').serializeArray();
+		if ( valid ) {
+				$.ajax(
+				{
+						url : "http://localhost:5000/login",
+						type: "POST",
+						data : loginData,
+						
+						beforeSend: function(){
+														$('#ajax-loader').show();
+												},
+						complete: function(){
+												$('#ajax-loader').hide();
+										},
+						success:function(result) {
+							alert(JSON.stringify(result.message));
+							if (result.error == false)
+							{
+							
+						//	txt="<th>Extra</th>";
+							$(".delBtn").show();
+							$(".updtbtn").show();
+							}
+						},
+						error: function(result) {
+							alert(result.message);
+						}
+				});
+				dialog.dialog( "close" );
+			}
+			return valid;
+	}
+
+		dialog = $( "#dialog-login-form" ).dialog({
+		autoOpen: false,
+		height: 500,
+		width: 450,
+		modal: true,
+		buttons: {
+			"Login": loginUser,
+			Cancel: function() {
+				dialog.dialog( "close" );
+			}
+		},
+		close: function() {
+			form[ 0 ].reset();
+			allFields.removeClass( "ui-state-error" );
+		}
+		});
+
+		form = dialog.find( "form" ).on( "submit", function( event ) {
+		event.preventDefault();
+		loginuser();
+		});
+
+		$( "#login-user" ).button().on( "click", function() {
+		dialog.dialog( "open" );
+		});
+
+	});
+
+
+	//--------End:: User login Pop up --------------------
 
 
 
 </script>
 
-   <body>
-   <div id="ajax-loader" class='spinner' style='display:None'>
+
+	
+	<body>
+		<div id="ajax-loader" class='spinner' style='display:None'>
 			<img src="spinner.gif" class="img-responsive"  />
-				</div>
-      <table width = "100%" border = "0">
-         
-         <tr>
-            <td colspan = "2" bgcolor = "#b5dcb3">
-               <h1>Sample Products Page</h1>
-            </td>
-         </tr>
-         <tr valign = "top">
-           
-            
-            <td bgcolor = "#eee" width = "125" height = "500">
-              
-			  
-			  <div class="result"></div>
-			  <table id="table" border="1">
-				<tr>
-					<th width="20%">Product Id</th>
-					<th width="20%">Category</th>
-					<th width="25%">Main Category</th>
-					<th width="15%">Price</th>
-					<th colspan=3></th>
-					
-					
-				</tr>
-				
-				</tr>
-			</table>
-			
-			<input type="submit" value="Add a product" class="addBtn">
-			
-			
+		</div>
+		<table width = "100%" border = "0">
+			<tr>
+				<td colspan = "2" bgcolor = "#b5dcb3">
+					<table width = "100%">
+						<tr>
+							<td>
+								<h1>Sample Products Page</h1>
+							</td>
+							<td align="right">
+									<button id="login-user">Login</button>
+								<br>
+										
+								<button id="create-user">Register</button>
+										
+									</td>
+								</td>
+								<tr>
+								</table>
+							</tr>
+							<tr valign = "top">
+								<td bgcolor = "#eee" width = "125" height = "500">
+									<div class="result"></div>
+									<table id="table" border="1">
+										<tr>
+											<th width="20%">Product Id</th>
+											<th width="20%">Category</th>
+											<th width="25%">Main Category</th>
+											<th width="15%">Price</th>
+											<th colspan=3></th>
+										</tr>
+									</tr>
+								</table>
+								<input type="submit" value="Add a product" class="addBtn">
+								</td>
+							</tr>
+							<tr>
+								<td colspan = "2" bgcolor = "#b5dcb3">
+									<center></center>
+								</td>
+							</tr>
+						</table>
+<div id="dialog-form" title="Register new user">
+<p class="validateTips">All form fields are required.</p>
+<form id="user-form">
+<fieldset>
+	<label for="name">Name</label>
+	<input type="text" name="name" id="name" placeholder="Jane Smith" class="text ui-widget-content ui-corner-all">
+		<label for="email">Email</label>
+		<input type="text" name="email" id="email" placeholder="jane@smith.com" class="text ui-widget-content ui-corner-all">
+			<label for="password">Password</label>
+			<input type="password" name="password" id="password" placeholder="xxxxxxx" class="text ui-widget-content ui-corner-all">
+			<label for="confPassword">Confirm Password</label>
+			<input type="password" name="confPassword" id="confPassword" placeholder="xxxxxxx" class="text ui-widget-content ui-corner-all">
+				<!-- Allow form submission with keyboard without duplicating the dialog button -->
+				<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+				</fieldset>
+			</form>
+		</div>
 
-			  
-            </td>
-         </tr>
-         <tr>
-            <td colspan = "2" bgcolor = "#b5dcb3">
-               <center>
-                  
-               </center>
-            </td>
-         </tr>
-         
-      </table>
-	  
-	  
-   </body>
 
+		<div id="dialog-login-form"  title="Login">
+			<p class="validateTips"></p>
+			<form id="login-form">
+				<fieldset>
+						<label for="loginUsername">Name</label>
+						<input type="text" name="loginUsername" id="loginUsername" value="Jane Smith" class="text ui-widget-content ui-corner-all">
+						<label for="loginEmail">Email</label>
+						<input type="text" name="loginEmail" id="loginEmail" value="jane@smith.com" class="text ui-widget-content ui-corner-all">
+						<label for="loginPassword">Password</label>
+						<input type="password" name="loginPassword" id="loginPassword" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
+						<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+				</fieldset>
+
+			</form>
+
+		</div>
+		<div id="greeting"><p >Welcome</p></div>
+	</body>
 </html>
