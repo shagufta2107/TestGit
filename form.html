@@ -27,6 +27,14 @@ $(document).ready(function(){
 			url : "http://localhost:5000/create",
 			type: "POST",
 			data : postData,
+			beforeSend: function(){
+						$('#ajax-loader').show();
+								
+						},
+			complete: function(){
+						$('#ajax-loader').hide();
+							
+						},
 			success:function(data) 
 			{
 				//alert(JSON.stringify(data));
@@ -40,6 +48,16 @@ $(document).ready(function(){
 		
 	});
 	
+	
+$(document).on('click', '.homeBtn', function(e) { 
+    try{
+     
+		window.location="http://localhost:5000/home"
+			
+		}
+    catch(err){alert(err);}
+});
+	
 
 
 
@@ -48,6 +66,9 @@ $(document).ready(function(){
 </script>
 
    <body>
+    <div id="ajax-loader" class='spinner' style='display:None'>
+			<img src="spinner.gif" class="img-responsive"  />
+				</div>
     <!--  <form acion="/create" method='POST' id='createProdForm'> -->
         <form   id='createProdForm'> 
           ProductId:<br>
@@ -67,6 +88,7 @@ $(document).ready(function(){
       </form>
 	  
 	  <div id="result"></div>
+	  <input type="submit" value="Home" class="homeBtn">
 	  
 	  
    </body>
