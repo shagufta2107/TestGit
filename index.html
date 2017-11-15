@@ -191,9 +191,6 @@ try{
     });
 
 //});
-    
-    
-    
 
 }
 catch(err){alert(err);}
@@ -498,6 +495,41 @@ catch(err){alert(err);}
 
 	//--------End:: User login Pop up --------------------
 
+	//----------Start: logout User-------
+	$(document).on('click', '#logout-user', function(e) { 
+	try{
+			
+			$.ajax({
+							type: "POST",
+							url:"http://localhost:5000/logout",
+							
+						
+							success: function(data)
+							{  	if(data)
+									{
+											
+											//alert(JSON.stringify(data));
+											window.location.reload();
+									}
+							
+							},
+							error: function() {
+									alert('Some problem occured during logout.');
+							}
+
+							});
+	}
+	catch(err)
+	{
+			alert(err);
+	}
+			
+	
+	});
+
+	
+// --------------End: logout user-----------
+
 
 
 </script>
@@ -515,6 +547,12 @@ catch(err){alert(err);}
 						<tr>
 							<td>
 								<h1>Sample Products Page</h1>
+							</td>
+							<td align="right">
+								<button id="logout-user">Logout</button>
+							
+									
+								</td>
 							</td>
 							
 								</td>
