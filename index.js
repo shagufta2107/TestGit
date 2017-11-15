@@ -26,8 +26,8 @@ app.use(bodyParser.json());
 app.use(session({
 	cookieName: 'session',
 	secret: 'random_string_goes_here',
-	duration: 1 * 60 * 1000,
-	activeDuration: 1 * 60 * 1000,
+	duration: 100 * 60 * 1000,
+	activeDuration: 100 * 60 * 1000,
   }));
 
 app.use(function (req, res, next) {
