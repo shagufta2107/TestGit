@@ -85,6 +85,7 @@ app.get('/home', function(request, response) {
 	if(request.session.user)
 	{	
 			console.log(" session");
+			console.log("user -->"+request.session.user.username);
 				fs.readFile('index.html', function (err, data) {
 					response.writeHead(200, {
 						'Content-Type': 'text/html',
@@ -162,58 +163,61 @@ app.post('/create',function(req,res)
 	//console.log(req.body);
 	prodId=req.body.productId;
 
+	if (req.session.user)	{
 
-
-	MongoClient.connect(MONGO_URL, function(err, db)
-	{ if (err) throw err;
-		checkIfExists(db,prodId,function (err, doc) {
-        if(err)
-			{
-            // error here
-			 console.log("Error1");
-            console.log(err);
-            return;
-        }
-
-        if(doc.length) {
-            insResponse = { error: true, message: "Product already exists." };
-			res.send(insResponse);
-            //console.dir(doc);
-        }
-		else
-		{
-            console.log('insert');
-
-
-			db.collection('ProductCollection').insertOne(
-			{
-				_id: (req.body.productId),
-				Category: (req.body.category),
-				MainCategory:(req.body.mainCategory),
-				Price:req.body.price
-			},function (err, result)
-				{
-					if (err)
+			MongoClient.connect(MONGO_URL, function(err, db)
+			{ if (err) throw err;
+				checkIfExists(db,prodId,function (err, doc) {
+				if(err)
 					{
+					// error here
+					console.log("Error1");
+					console.log(err);
+					return;
+				}
 
-						insResponse = { error: true, message: "Error adding the product." };
+				if(doc.length) {
+					insResponse = { error: true, message: "Product already exists." };
+					res.send(insResponse);
+					//console.dir(doc);
+				}
+				else
+				{
+					console.log('insert');
+
+
+					db.collection('ProductCollection').insertOne(
+					{
+						_id: (req.body.productId),
+						Category: (req.body.category),
+						MainCategory:(req.body.mainCategory),
+						Price:req.body.price,
+						AddedBy: req.session.user.username
+						
+					},function (err, result)
+						{
+							if (err)
+							{
+
+								insResponse = { error: true, message: "Error adding the product." };
+								res.send(insResponse);
+
+							}
+
+						//console.log(result);
+						insResponse = { error: false, message: "successfully added.",id: result.insertedId  };
 						res.send(insResponse);
-
-					}
-
-				//console.log(result);
-				insResponse = { error: false, message: "successfully added.",id: result.insertedId  };
-				res.send(insResponse);
-				db.close();
-				});
+						db.close();
+						});
 
 
 
-        }
+				}
 
-    });
+			});
 
-});
+		});
+	}
 });
 
 
