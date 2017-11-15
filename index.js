@@ -315,48 +315,41 @@ app.post('/update',function(req,res)
 	console.log(req.body);
 	prodId=req.body.prodId;
 	console.log(prodId);
+	console.log(req.session.user.username);
 
-
-	MongoClient.connect(MONGO_URL, function(err, db)
+	if (req.session.user)
 	{
 
-			/*db.collection('ProductCollection').update( {_id: req.body.productId},
-			{	$set:
-				{
+		MongoClient.connect(MONGO_URL, function(err, db)
+		{
 
-					Category: (req.body.category),
-					MainCategory:(req.body.mainCategory),
-					Price:req.body.price
-				}*/
-			db.collection('ProductCollection').update( {_id: prodId},
-			{	$set:
-				{
-
-					Category: (req.body.category),
-					MainCategory:(req.body.mainCategory),
-					Price:req.body.price
-				}
-			},function (err, result)
-				{
-					if (err)
+				db.collection('ProductCollection').update( {_id: prodId},
+				{	$set:
 					{
 
-						insResponse = { error: true, message: "Error updating the product." };
-						res.send(insResponse);
-
+						Category: (req.body.category),
+						MainCategory:(req.body.mainCategory),
+						Price:req.body.price,
+						LastUpdatedBy:req.session.user.username
 					}
-				console.log("success");
-				//console.log(result);
-				insResponse = { error: false, message: "Successfully updated product."+req.body.prodId  };
-				res.send(insResponse);
-				db.close();
-				});
+				},function (err, result)
+					{
+						if (err)
+						{
 
+							insResponse = { error: true, message: "Error updating the product." };
+							res.send(insResponse);
 
-
-
-
-    });
+						}
+					console.log("success");
+					//console.log(result);
+					insResponse = { error: false, message: "Successfully updated product."+req.body.prodId};
+					res.send(insResponse);
+					db.close();
+					});
+		});
+	
+	}
 
 });
 

@@ -52,7 +52,7 @@ $(document).ready(function(){
                         {
                             for(var i=0;i<len;i++){
                             if(data[i]._id && data[i].Category && data[i].MainCategory && data[i].Price){
-                                txt += "<tr><td class='prodId'><input type='text'  data-default="+data[i]._id+" value="+data[i]._id+" disabled=true>  </input></td><td class='category' ><input  type='text' data-default="+data[i].Category+" value="+data[i].Category+" disabled=true>  </input></td><td class='mainCategory' ><input  type='text'  data-default="+data[i].MainCategory+" value="+data[i].MainCategory+" disabled=true>  </input></td><td class='price'><input   type='number' data-default="+data[i].Price+" value="+data[i].Price+" disabled=true>  </input></td><td class='AddedBy'><input   type='text' data-default="+data[i].AddedBy+" value="+data[i].AddedBy+" disabled=true>  </input></td><td  ><span class='updtbtn' ><i class='w3-xlarge fa fa-edit'></i></span><span class='saveBtn' style='display:none'><i class='w3-xlarge fa fa-save' ></i></span><span class='cancelBtn' style='display:none'><i class='w3-xlarge fa fa-close cancel'></i></span></td><td><span class='delBtn'  ><i class='w3-xlarge fa fa-trash' ></span></td><td><input type=button value='Update' class='simpleupdate'</td></tr>";
+                                txt += "<tr><td class='prodId'><input type='text'  data-default="+data[i]._id+" value="+data[i]._id+" disabled=true>  </input></td><td class='category' ><input  type='text' data-default="+data[i].Category+" value="+data[i].Category+" disabled=true>  </input></td><td class='mainCategory' ><input  type='text'  data-default="+data[i].MainCategory+" value="+data[i].MainCategory+" disabled=true>  </input></td><td class='price'><input   type='number' data-default="+data[i].Price+" value="+data[i].Price+" disabled=true>  </input></td><td class='AddedBy'><input   type='text' data-default="+data[i].AddedBy+" value="+data[i].AddedBy+" disabled=true>  </input></td><td class='LastUpdatedBy'><input   type='text' data-default="+data[i].LastUpdatedBy+" value="+data[i].LastUpdatedBy+" disabled=true>  </input></td><td  ><span class='updtbtn' ><i class='w3-xlarge fa fa-edit'></i></span><span class='saveBtn' style='display:none'><i class='w3-xlarge fa fa-save' ></i></span><span class='cancelBtn' style='display:none'><i class='w3-xlarge fa fa-close cancel'></i></span></td><td><span class='delBtn'  ><i class='w3-xlarge fa fa-trash' ></span></td><td><input type=button value='Update' class='simpleupdate'</td></tr>";
                                 }
                             }
                             if(txt != ""){
@@ -62,7 +62,7 @@ $(document).ready(function(){
                     }
                 },
                 error: function() {
-                    alert('Not OKay');
+                    alert('Not Okay');
                 }
             });
 	});
@@ -569,6 +569,7 @@ catch(err){alert(err);}
 											<th width="25%">Main Category</th>
 											<th width="10%">Price</th>
 											<th width="10%">Added By</th>
+											<th width="10%">Last Updated By</th>
 											<th colspan=3></th>
 										</tr>
 									</tr>
