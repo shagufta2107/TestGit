@@ -26,8 +26,8 @@ app.use(bodyParser.json());
 app.use(session({
 	cookieName: 'session',
 	secret: 'random_string_goes_here',
-	duration: 30 * 60 * 1000,
-	activeDuration: 5 * 60 * 1000,
+	duration: 1 * 60 * 1000,
+	activeDuration: 1 * 60 * 1000,
   }));
 
 app.use(function (req, res, next) {
@@ -480,6 +480,26 @@ app.post('/login', function(req, res) {
 });
 
 // ----------------- Finish: Login user-------------------------------------
+
+//-------------------Start: Logout User-----------------
+app.post('/logout', function(request, response) {
+	console.log("Logout request");
+
+
+	request.session.reset();
+    response.redirect('/home');
+ /*  fs.readFile('unloggedin.html', function (err, data) {
+	response.writeHead(200, {
+		'Content-Type': 'text/html',
+
+	});
+	response.write(data);
+	response.end();
+});*/
+
+});
+
+//-----------------End: Logout User---------------------------
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
